@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <link href="/dist/output.css" rel="stylesheet" />
+  <body>
+    <div class="flex m-auto items-center border-2 w-2/6 h-1/2 p-2 shadow-xl">
+      <center>
+        <form class="w-full">
+          <div class="flex items-center border-teal-500 py-4">
+            <input
+              id="input-user"
+              class="appearance-none bg-transparent border-b-2 w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+              type="text"
+              placeholder="Eating"
+              aria-label="Full name"
+            />
+            <button
+              class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
+              type="button"
+              onclick="onAdd()"
+            >
+              Add Todo
+            </button>
+            <button
+              class="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded"
+              type="button"
+              onclick="onCancel()"
+            >
+              Cancel
+            </button>
+          </div>
+          <ul id="list"></ul>
+        </form>
+      </center>
+      <div class="flex">
+        <img
+          class="w-32"
+          src="https://th.bing.com/th/id/OIP.SBZIo42I8CJSRXwcV-uX_wHaLI?pid=ImgDet&rs=1"
+          alt=""
+        />
+      </div>
+    </div>
+  </body>
+  <script>
+    let database = [];
+
+    let onAdd = () => {
+      let newTodo = document.getElementById("input-user").value;
+
+      if (!newTodo) {
+        alert("You need to put a value");
+      } else {
+        database.push(newTodo);
+        document.getElementById("input-user").value = "";
+      }
+      onShow();
+    };
+
+    let onCancel = () => {
+      document.getElementById("input-user").value = "";
+
+      onShow();
+    };
+
+    let onDelete = (index) => {
+      database.splice(index, 1);
+      alert("Item deleted successfuly");
+      onShow();
+    };
+
+    let onEdit = (indexDataYangMauDihapus) => {
+      let editTodo = prompt("Edit Todo:");
+
+      if (editTodo === null) {
+        onShow();
+      } else {
+        database[indexDataYangMauDihapus] = editTodo;
+        onShow();
+      }
+    };
+
+    let onShow = () => {
+      let collectionsOfData = database.map((item, index) => {
+        return `
+        <div class="text-center items-center">
+          <div class="flex justify-between mt-2">  
+            <div>
+              <li class="text-2sm uppercase italic pl-2">
+                ${index + 1}. ${item}
+              </li>
+              </div>
+            <div>
+              <button class="flex-shrink-0 bg-yellow-400 hover:bg-yellow-500 border-yellow-400 hover:border-yellow-500 text-sm border-4 text-white py-1 px-2 rounded" onclick="onEdit(${index})">EDIT</button> 
+              <button class= "flex-shrink-0 bg-red-400 hover:bg-red-500 border-red-400 hover:border-red-500 text-sm border-4 text-white py-1 px-2 rounded" onclick="onDelete(${index})">DELETE</button>
+              </div>
+          </div>
+          <br>
+
+        </div>`;
+      });
+
+      let list = document.getElementById("list");
+
+      list.innerHTML = collectionsOfData.join("");
+    };
+
+    onShow();
+  </script>
+</html>
